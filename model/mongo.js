@@ -1,7 +1,7 @@
 'use strict';
 var soajs = require('soajs');
 var config = require('../config.js');
-var utils = require('soajs/lib/').utils;
+var Hasher = require("../hasher.js");
 
 
 var Mongo = soajs.mongo;
@@ -27,8 +27,63 @@ function validateId(id, cb) {
 	}
 }
 
+function encryptPwd(pwd, config) {
+	var hashConfig = {
+		"hashIterations": config.hashIterations,
+		"seedLength": config.seedLength
+	};
+	var hasher = new Hasher(hashConfig);
+	return hasher.hashSync(pwd);
+}
+
+function comparePwd(pwd, cypher, config, cb) {
+	var hashConfig = {
+		"hashIterations": config.hashIterations,
+		"seedLength": config.seedLength
+	};
+	var hasher = new Hasher(hashConfig);
+	hasher.compare(pwd, cypher, cb);
+}
 
 module.exports = {
+
+	"addUser": function (soajs, cb) {
+		checkIfMongo(soajs);
+		var privilege = 0;
+		mongo.findOne(usersCollection, {"privilege": privilege}, function (error, response) {
+			if (error) {
+				return cb(error);
+			}
+			if (response) {
+				privilege = 1;
+			}
+			soajs.inputmaskData.user.privilege = privilege;
+			var cond = {
+				$or: [
+					{'username': soajs.inputmaskData.user['username']},
+					{'email': soajs.inputmaskData.user['email']}
+				]
+			};
+			mongo.findOne(usersCollection, cond, function (error, response) {
+				if (error) {
+					return cb(error);
+				}
+				if (response) {
+					return cb({"code": 405});
+				}
+				soajs.inputmaskData.user.password = encryptPwd(soajs.inputmaskData.user.password, config);
+				mongo.insert(usersCollection, soajs.inputmaskData.user, function (error, response) {
+					if (Array.isArray(response) && response.length === 1) {
+						if(response[0].password){
+							delete response[0].password;
+						}
+						return cb(error, response[0]);
+					}
+					return cb(error, true);
+				});
+			});
+		});
+	},
 
 	"login": function (soajs, cb) {
 		checkIfMongo(soajs);
@@ -45,7 +100,10 @@ module.exports = {
 			if (!user) {
 				return cb({"code": 409});
 			}
-			if (soajs.inputmaskData.password === user.password) {
+			comparePwd(soajs.inputmaskData.password, user.password, config, function (err, response) {
+				if (err || !response) {
+					return cb({"code": 408});
+				}
 				var condition = {};
 				if (user.privilege === 1) {
 					condition.uid = user._id.toString();
@@ -75,10 +133,7 @@ module.exports = {
 						});
 					});
 				});
-			}
-			else {
-				return cb({"code": 408});
-			}
+			});
 		});
 	}
 };
