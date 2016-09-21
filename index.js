@@ -28,5 +28,13 @@ service.init(function () {
 		});
 	});
 
+	service.post("/user", function (req, res) {
+		initBLModel(req, res, function (BL) {
+			BL.addUser(config, req.soajs, function (error, response) {
+				return res.json(req.soajs.buildResponse(error, response));
+			});
+		});
+	});
+
 	service.start();
 });

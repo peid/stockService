@@ -58,6 +58,42 @@ module.exports = {
 						"type": "string"
 					}
 				}
+			},
+			"/user": {
+				"_apiInfo": {
+					"l": "Add new user",
+					"group": "Basic",
+					"groupMain": false
+				},
+				"user": {
+					"source": ["body.user"],
+					"required": true,
+					"validation": {
+						"type": "object",
+						"properties": {
+							"username": {
+								"required": true,
+								"type": "string"
+							},
+							"firstName": {
+								"required": true,
+								"type": "string"
+							},
+							"lastName": {
+								"required": true,
+								"type": "string"
+							},
+							"email": {
+								"required": true,
+								"type": "string", format: "email"
+							},
+							"password": {
+								"required": true,
+								"type": "string"
+							}
+						}
+					}
+				}
 			}
 		}
 	}
