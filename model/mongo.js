@@ -155,5 +155,15 @@ module.exports = {
 				});
 			});
 		});
+	},
+
+	"addProduct": function (soajs, cb) {
+		checkIfMongo(soajs);
+		mongo.insert(productsCollection, soajs.inputmaskData.product, function (error, response) {
+			if (Array.isArray(response) && response.length === 1) {
+				return cb(error, response[0]);
+			}
+			return cb(error, true);
+		});
 	}
 };
