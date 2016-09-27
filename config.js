@@ -1,6 +1,5 @@
 'use strict';
 
-var contact = require(__dirname + "/model/schemas/contact.js");
 
 module.exports = {
 	serviceName: "stock",
