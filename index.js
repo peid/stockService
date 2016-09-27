@@ -27,7 +27,13 @@ service.init(function () {
 			});
 		});
 	});
-
+	service.post("/product", function (req, res) {
+		initBLModel(req, res, function (BL) {
+			BL.addProduct(config, req.soajs, function (error, response) {
+				return res.json(req.soajs.buildResponse(error, response));
+			});
+		});
+	});
 	service.post("/user", function (req, res) {
 		initBLModel(req, res, function (BL) {
 			BL.addUser(config, req.soajs, function (error, response) {
@@ -35,6 +41,12 @@ service.init(function () {
 			});
 		});
 	});
-
+	service.delete("/user/:id", function (req, res) {
+		initBLModel(req, res, function (BL) {
+			BL.deleteUser(config, req.soajs, function (error, response) {
+				return res.json(req.soajs.buildResponse(error, response));
+			});
+		});
+	});
 	service.start();
 });
