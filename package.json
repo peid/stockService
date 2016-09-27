@@ -1,0 +1,24 @@
+{
+  "name": "smb215.stock",
+  "description": "smb215 stock service",
+  "version": "0.0.1",
+  "author": {
+    "name": "smb215 team",
+    "email": "peter.eid@isae.edu.lb"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:peid/stockService.git"
+  },
+  "license": "Apache-2.0",
+  "engines": {
+    "node": "*"
+  },
+  "dependencies": {
+    "soajs": "0.3.*",
+    "bcrypt": "*"
+  },
+  "devDependencies": {
+
+  }
+}
