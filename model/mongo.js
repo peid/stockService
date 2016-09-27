@@ -85,6 +85,26 @@ module.exports = {
 		});
 	},
 
+	"deleteUser": function (soajs, cb) {
+		checkIfMongo(soajs);
+		validateId(soajs.inputmaskData.id, function (error, id) {
+			if (error) {
+				return cb(error);
+			}
+			mongo.count(usersCollection, {"_id": id}, function (error, count) {
+				if (error) {
+					return cb(error);
+				}
+				if (!count) {
+					return cb(new Error("No entry found for id ", id));
+				}
+				mongo.remove(usersCollection, {"_id": id}, function (error) {
+					return cb(error, true);
+				});
+			});
+		});
+	},
+
 	"login": function (soajs, cb) {
 		checkIfMongo(soajs);
 		var criteria = {'username': soajs.inputmaskData['username']};
