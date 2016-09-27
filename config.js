@@ -58,6 +58,20 @@ module.exports = {
 					}
 				}
 			},
+			"/product": {
+				"_apiInfo": {
+					"l": "Add new Product",
+					"group": "Basic",
+					"groupMain": false
+				},
+				"product": {
+					"source": ["body.product"],
+					"required": true,
+					"validation": {
+						"type": "object"
+					}
+				}
+			},
 			"/user": {
 				"_apiInfo": {
 					"l": "Add new user",
@@ -93,6 +107,16 @@ module.exports = {
 						}
 					}
 				}
+			}
+		},
+		"delete": {
+			"/user/:id": {
+				"_apiInfo": {
+					"l": "Delete User by ID",
+					"group": "Basic",
+					"groupMain": false
+				},
+				"commonFields": ["id"]
 			}
 		}
 	}
