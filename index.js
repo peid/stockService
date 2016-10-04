@@ -27,6 +27,7 @@ service.init(function () {
 			});
 		});
 	});
+
 	service.post("/product", function (req, res) {
 		initBLModel(req, res, function (BL) {
 			BL.addProduct(config, req.soajs, function (error, response) {
@@ -34,6 +35,15 @@ service.init(function () {
 			});
 		});
 	});
+
+	service.post("/operation", function (req, res) {
+		initBLModel(req, res, function (BL) {
+			BL.addOperation(config, req.soajs, function (error, response) {
+				return res.json(req.soajs.buildResponse(error, response));
+			});
+		});
+	});
+
 	service.post("/user", function (req, res) {
 		initBLModel(req, res, function (BL) {
 			BL.addUser(config, req.soajs, function (error, response) {
@@ -41,6 +51,7 @@ service.init(function () {
 			});
 		});
 	});
+
 	service.delete("/user/:id", function (req, res) {
 		initBLModel(req, res, function (BL) {
 			BL.deleteUser(config, req.soajs, function (error, response) {
@@ -48,5 +59,22 @@ service.init(function () {
 			});
 		});
 	});
+
+	service.delete("/product/:id", function (req, res) {
+		initBLModel(req, res, function (BL) {
+			BL.deleteProduct(config, req.soajs, function (error, response) {
+				return res.json(req.soajs.buildResponse(error, response));
+			});
+		});
+	});
+
+	service.delete("/operation/:id", function (req, res) {
+		initBLModel(req, res, function (BL) {
+			BL.deleteOperation(config, req.soajs, function (error, response) {
+				return res.json(req.soajs.buildResponse(error, response));
+			});
+		});
+	});
+
 	service.start();
 });
