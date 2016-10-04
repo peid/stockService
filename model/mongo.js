@@ -165,5 +165,54 @@ module.exports = {
 			}
 			return cb(error, true);
 		});
+	},
+
+	"addOperation": function (soajs, cb) {
+		checkIfMongo(soajs);
+		validateId(soajs.inputmaskData.operation.pid, function (error, id) {
+			if (error) {
+				return cb(error);
+			}
+			mongo.findOne(productsCollection, {"_id": id}, function (error, response) {
+				if (error) {
+					return cb(error);
+				}
+				if (!response) {
+					return cb({"code": 410});
+				}
+				if (response.stock && response.stock >= soajs.inputmaskData.operation.qtt) {
+					response.stock = response.stock - soajs.inputmaskData.operation.qtt;
+					mongo.save(productsCollection, response, function (err) {
+						if(err){
+							return cb(err);
+						}
+						var product = utils.cloneObj(response);
+						delete product._id;
+						soajs.inputmaskData.operation.productDetails = product;
+						mongo.insert(operationCollection, soajs.inputmaskData.operation, function (error, operation) {
+							if (error) {
+								response.stock = response.stock + soajs.inputmaskData.operation.qtt;
+								mongo.save(productsCollection, response, function (err) {
+									if(err){
+										return cb(err);
+									}
+									return cb(error);
+								});
+							}
+							if (Array.isArray(operation) && operation.length === 1) {
+								return cb(error, operation[0]);
+							}
+							return cb(error, true);
+						});
+					});
+				}
+				else {
+					return cb({"code": 411});
+				}
+			});
+		});
 	}
+
+
+
 };
