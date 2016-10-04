@@ -167,6 +167,31 @@ module.exports = {
 		});
 	},
 
+	"deleteProduct": function (soajs, cb) {
+		checkIfMongo(soajs);
+		validateId(soajs.inputmaskData.id, function (error, id) {
+			if (error) {
+				return cb(error);
+			}
+			mongo.count(productsCollection, {"_id": id}, function (error, count) {
+				if (error) {
+					return cb(error);
+				}
+				if (!count) {
+					return cb(new Error("No entry found for id ", id));
+				}
+				mongo.remove(productsCollection, {"_id": id}, function (error) {
+					if (error) {
+						return cb(error);
+					}
+					mongo.remove(operationCollection, {"pid": soajs.inputmaskData.id}, function (error) {
+						return cb(error, true);
+					});
+				});
+			});
+		});
+	},
+
 	"addOperation": function (soajs, cb) {
 		checkIfMongo(soajs);
 		validateId(soajs.inputmaskData.operation.pid, function (error, id) {
@@ -232,7 +257,5 @@ module.exports = {
 			});
 		});
 	}
-
-
 
 };
