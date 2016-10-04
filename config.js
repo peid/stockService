@@ -72,6 +72,20 @@ module.exports = {
 					}
 				}
 			},
+			"/operation": {
+				"_apiInfo": {
+					"l": "Add new operation",
+					"group": "Basic",
+					"groupMain": false
+				},
+				"operation": {
+					"source": ["body.operation"],
+					"required": true,
+					"validation": {
+						"type": "object"
+					}
+				}
+			},
 			"/user": {
 				"_apiInfo": {
 					"l": "Add new user",
@@ -110,9 +124,25 @@ module.exports = {
 			}
 		},
 		"delete": {
+			"/product/:id": {
+				"_apiInfo": {
+					"l": "Delete Product by ID",
+					"group": "Basic",
+					"groupMain": false
+				},
+				"commonFields": ["id"]
+			},
 			"/user/:id": {
 				"_apiInfo": {
 					"l": "Delete User by ID",
+					"group": "Basic",
+					"groupMain": false
+				},
+				"commonFields": ["id"]
+			},
+			"/operation/:id": {
+				"_apiInfo": {
+					"l": "Delete Operation by ID",
 					"group": "Basic",
 					"groupMain": false
 				},
