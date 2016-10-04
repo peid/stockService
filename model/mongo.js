@@ -211,6 +211,26 @@ module.exports = {
 				}
 			});
 		});
+	},
+
+	"deleteOperation": function (soajs, cb) {
+		checkIfMongo(soajs);
+		validateId(soajs.inputmaskData.id, function (error, id) {
+			if (error) {
+				return cb(error);
+			}
+			mongo.findOne(operationCollection, {"_id": id}, function (error, response) {
+				if (error) {
+					return cb(error);
+				}
+				if (!response) {
+					return cb(new Error("No entry found for id ", id));
+				}
+				mongo.remove(operationCollection, {"_id": id}, function (error) {
+					return cb(error, true);
+				});
+			});
+		});
 	}
 
 
