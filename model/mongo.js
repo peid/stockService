@@ -58,6 +58,8 @@ module.exports = {
 				privilege = 1;
 			}
 			soajs.inputmaskData.user.privilege = privilege;
+			soajs.inputmaskData.user['username'] = soajs.inputmaskData.user['username'].toLowerCase();
+			soajs.inputmaskData.user['email'] = soajs.inputmaskData.user['email'].toLowerCase();
 			var cond = {
 				$or: [
 					{'username': soajs.inputmaskData.user['username']},
@@ -107,6 +109,7 @@ module.exports = {
 
 	"login": function (soajs, cb) {
 		checkIfMongo(soajs);
+		soajs.inputmaskData['username'] = soajs.inputmaskData['username'].toLowerCase();
 		var criteria = {'username': soajs.inputmaskData['username']};
 		var pattern = soajs.validator.SchemaPatterns.email;
 		if (pattern.test(soajs.inputmaskData['username'])) {
