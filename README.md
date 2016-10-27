@@ -97,3 +97,52 @@ curl -X POST -H "Content-Type: application/json -d '{<br>
 ]<br>
 }<br>
 }<br>
+
+We will advance to the <b>Product</b> API :<br>
+
+Uri: smb215.ddns.net:4999/product<br>
+Method: post<br>
+Header: Content-Type: application/json<br>
+Body:<br>
+{<br>
+“product”: {<br>
+“name”:”string”,<br>
+“stock”: “number or string”,<br>
+“barcode”:”string”,<br>
+“productimage”:”url”<br>
+}<br>
+}
+
+- CURL example:<br>
+
+curl -X POST -H "Content-Type: application/json” -d '{<br>
+"product":{<br>
+"name":"laptop",<br>
+"stock": "100",<br>
+"barcode":"1234567890",<br>
+"productimage":"http://ssl-product-images.www8-<br>
+hp.com/digmedialib/prodimg/lowres/c05089529.png"<br>
+}}' http://smb215.ddns.net:4999/product<br>
+
+- Valid Response:<br>
+
+{<br>
+"result": true,<br>
+"data": {<br>
+"name": "laptop",<br>
+"stock": "100",<br>
+"barcode": "1234567890",<br>
+"productimage": "http://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c05089529.png",<br>
+"_id": "5805281911c3d9301717a7f9"<br>
+}<br>
+}<br>
+
+- Error Response:<br>
+
+{<br>
+"result": false,<br>
+"errors": {<br>
+"codes": [172 ],<br>
+"details": [{"code": 172,<br>
+"message": "Missing required field: product"}]}<br>
+}<br>
