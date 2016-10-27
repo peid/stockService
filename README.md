@@ -31,7 +31,7 @@ To make the application dynamic we used the following:
 We created 7 API's that works on the login, on creating a user, an order, a product and on deleting a user or a user or a product.
 Now we will take a look at the code of the API's with a CURL example, his response and errors.
 
-Let's start with the <b>login</b> API :
+#####Let's start with the login API :
 
 Uri: smb215.ddns.net:4999/login<br>
 Header: Content-Type: application/json<br>
@@ -39,7 +39,8 @@ Body:<br>
 {<br>
 “username”:”string or email”,<br>
 “password”:”string”<br>
-}<br>
+}
+
 - CURL example:
 
 curl -X POST -H "Content-Type: application/json -d '{<br>
@@ -98,7 +99,7 @@ curl -X POST -H "Content-Type: application/json -d '{<br>
 }<br>
 }<br>
 
-We will advance to the <b>Product</b> API :<br>
+##### We will advance to the Product API :<br>
 
 Uri: smb215.ddns.net:4999/product<br>
 Method: post<br>
@@ -145,4 +146,55 @@ hp.com/digmedialib/prodimg/lowres/c05089529.png"<br>
 "codes": [172 ],<br>
 "details": [{"code": 172,<br>
 "message": "Missing required field: product"}]}<br>
+}<br>
+
+##### This is the API of the user<br>
+Uri: smb215.ddns.net:4999/user<br>
+Method: post<br>
+Header: Content-Type: application/json<br>
+Body:<br>
+{<br>
+“user”:{<br>
+“username”:”string”,<br>
+“firstName”:”string”,<br>
+“lastName”:”string”,<br>
+“email”:”string format email”,<br>
+“password”:”string”<br>
+}<br>
+}
+
+- CURL example:
+
+curl -X POST -H "Content-Type: application/json" -d '{<br>
+"user":{<br>
+"username":"peter_eid",<br>
+"password":"password",<br>
+"firstName":"peter",<br>
+"lastName":"eid",<br>
+"email":"peter.eid@isae.edu.lb"<br>
+}<br>
+}<br>
+' http://smb215.ddns.net:4999/user<br>
+
+- Valid Response:<br>
+{<br>
+"result": true,<br>
+"data": {<br>
+"username": "peter_eid",<br>
+"firstName": "peter",<br>
+"lastName": "eid",<br>
+"email": "peter.eid@isae.edu.lb",<br>
+"privilege": 1,<br>
+"_id": "58052b6d11c3d9301717a7fc"<br>
+}<br>
+}<br>
+
+- Error Response:
+
+{<br>
+"result": false,<br>
+"errors": {<br>
+"codes": [405],<br>
+"details": [{"code": [405],<br>
+"message": "UserName Or Email Already Exists!" }]}<br>
 }<br>
