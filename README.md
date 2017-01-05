@@ -1,3 +1,4 @@
+[![Build Status](https://drone.io/github.com/peid/stockService/status.png)](https://drone.io/github.com/peid/stockService/latest)
 # Introduction
 This Repository is offering a stock Web Service.
 
