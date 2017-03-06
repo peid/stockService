@@ -14,6 +14,10 @@
   "engines": {
     "node": "*"
   },
+   "scripts": {
+    "start": "node index.js"
+  },
+  "main": "index.js",
   "dependencies": {
     "soajs": "0.3.*",
     "bcrypt": "*"
